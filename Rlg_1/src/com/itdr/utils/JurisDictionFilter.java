@@ -21,6 +21,7 @@ public class JurisDictionFilter implements Filter {
         HttpServletRequest request=(HttpServletRequest)req;
         String pathInfo=request.getPathInfo();
         if(pathInfo.equals("/login.do")){
+            System.out.println("1111");
             chain.doFilter(req, resp);
             return;
         }
@@ -29,21 +30,24 @@ public class JurisDictionFilter implements Filter {
         if(user==null){
             rs.setStatus(3);
             rs.setMag("请登录后操作");
+            System.out.println("121");
             resp.getWriter().write(rs.toString());
             return;
         }
         if(user.getType()!=1){
           rs.setStatus(3);
+            System.out.println("31");
           rs.setMag("没有操作权限");
           resp.getWriter().write(rs.toString());
           return;
         }
+        System.out.println("1511");
         chain.doFilter(req,resp);
         return;
 
     }
 
-    public void init ( FilterConfig config ) throws ServletException {
+    public void init ( FilterConfig config ) {
 
     }
 
