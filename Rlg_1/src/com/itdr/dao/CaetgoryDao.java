@@ -41,7 +41,7 @@ public class CaetgoryDao {
 
     public Integer category_name ( Integer ids, String categoryName ) {
         QueryRunner qr=new QueryRunner(getCom());
-        String sql="UPDATE category set name='"+categoryName+"' WHERE  id="+ids+"2  ";
+        String sql="UPDATE category set name='"+categoryName+"' WHERE  id="+ids;
         int a=0;
         try {
             a= qr.update(sql);

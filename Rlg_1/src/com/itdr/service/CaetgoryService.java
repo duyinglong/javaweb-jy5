@@ -8,7 +8,11 @@ import com.itdr.dao.UserDao;
 import com.itdr.pojo.Caetgory;
 import com.itdr.pojo.Product;
 import com.itdr.pojo.Users;
+import com.itdr.utils.PoolUtil;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class CaetgoryService {
@@ -74,13 +78,32 @@ public class CaetgoryService {
                 return rs;
             }
         Integer a= cd.add_category( ids,categoryName);
-            rs.setData(a);
-            rs.setMag("\"添加品类成功");
-            rs.setStatus(0);
+            if(a==1){
+                rs.setData(a);
+                rs.setMag("添加品类成功");
+                rs.setStatus(0);
+                return rs;
+            }else {
+                rs.setStatus(1);
+                rs.setMag("添加品类失败");
+            }
+
 
         return  rs;
     }
-    public  ResponseCode category_name(String parentId, String categoryName){
+    public  Caetgory selectOne ( Integer id ) {
+        QueryRunner qr = new QueryRunner(PoolUtil.getCom());
+
+        String sql = "select * from product where id=?";
+        Caetgory u = null;
+        try {
+            u = qr.query(sql, new BeanHandler<Caetgory>(Caetgory.class), id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return u;
+    }
+   /* public  ResponseCode category_name(String parentId, String categoryName){
         ResponseCode rs =new ResponseCode();
         if(parentId.equals("")||categoryName.equals("")||parentId==null||categoryName==null){
             rs.setStatus(Const.USER_PARAMETER_CODE);
@@ -102,9 +125,27 @@ public class CaetgoryService {
         rs.setStatus(0);
 
         return  rs;
-    }
+    }*/
 
     public ResponseCode set_category_name ( String parentid, String categoryName ) {
-        return null;
+        Integer a=null;
+        ResponseCode rs=new ResponseCode();
+        try {
+            a=Integer.parseInt(parentid);
+        }catch (Exception e){
+            rs.setStatus(1);
+            rs.setMag("输入非法参数！");
+            return  rs;
+        }
+         int b=cd.category_name(a,categoryName);
+        if(b==1){
+            rs.setStatus(0);
+            rs.setMag("更新品类名字成功！");
+            return rs;
+        }else {
+            rs.setStatus(1);
+            rs.setMag("更新品类名字失败");
+        }
+        return rs;
     }
 }

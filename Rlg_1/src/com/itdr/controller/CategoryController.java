@@ -61,7 +61,7 @@ public class CategoryController extends HttpServlet {
         String parentid=request.getParameter("parentId");
         String categoryName=request.getParameter("categoryName");
 
-        return  rs=  cs.add_category(parentid,categoryName);
+        return  rs=  cs.set_category_name(parentid,categoryName);
 
     }
 
@@ -79,7 +79,7 @@ public class CategoryController extends HttpServlet {
         String parentid=request.getParameter("parentId");
         String categoryName=request.getParameter("categoryName");
 
-        return  rs= cs.set_category_name(parentid,categoryName);
+        return  rs= cs.add_category(parentid,categoryName);
 
     }
 
